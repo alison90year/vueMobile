@@ -1,12 +1,26 @@
 <template>
     <div id="app">
-        444
-        <div class="head">头部</div>
-
-        <nut-button>
-            去结算{{name}}
-        </nut-button>
+        <div class="head">头部
+<!--            <nut-icon type="self" :url="require('assets/icons/svg/zs.svg')"></nut-icon>-->
+<!--            <nut-icon-->
+<!--                    type="top"-->
+<!--            >-->
+<!--            </nut-icon>-->
+            <button @click="file" style="width: 100px;height: 20px">上传文件</button>
+            <label ref="upload"
+                   style="position: relative;">
+                <input type="file"
+                       @change="selectFile"
+                       style=" width: 100px; height: 40px; opacity: 0;">
+            </label>
+            <img :src="contentUrl" style="width: 200px;height: 200px" v-if="contentUrl">
+        </div>
+        <div style="background: gold" class="bottm"></div>
+<!--        <nut-button>-->
+<!--            去结算{{name}}-->
+<!--        </nut-button>-->
         <router-view></router-view>
+
     </div>
 </template>
 
@@ -17,7 +31,8 @@
     name: 'app',
     data() {
       return {
-        list: []
+        list: [],
+        contentUrl:''
       }
     },
     components: {},
@@ -29,20 +44,45 @@
     },
     methods: {
       init() {
-        this.$store.dispatch('func1')
+        this.$store.dispatch('home/func1')
+        // this.$store.dispatch('home/uploadAction')
+      },
+      file() {
+        // 模拟点击file input触发选择文件，注意：不能在任何方式的回调里面执行此语句
+        this.$refs.upload.click()
+      },
+      selectFile(event) {
+        // 调用上传方法，传入选择的文件对象
+        this.$uploadFile(event.target.files[0], (fd) => {
+                 console.log(fd)
+          const formdata = new FormData()
+          formdata.append('file', fd.file)
+          formdata.append('md5', fd.md5)
+                this.$store.dispatch('home/uploadAction',formdata).then(res => {
+                    console.log(res)
+                }).catch(err => {
+                     console.log(err)
+                })
+                // this.contentUrl='//bpic.588ku.com/ad_diversion/20/01/16/a92278a30f085d9148a809c8cba845ce.png'
+        })
+        // 重置file input控件的值
+        event.target.value = ''
       }
     }
   }
 </script>
 
 <style lang="scss">
-    @import "styles/reset.css";
+    @import "src/styles/reset.scss";
 
     #app {
         .head {
-            background: red;
             display: flex;
-            height: 500px;
+            height: 600px;
+            background: aliceblue;
+        }
+        .bottm{
+            height: 40px;
         }
     }
 </style>

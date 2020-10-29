@@ -1,6 +1,7 @@
-import { get } from '@/utils/fetch'
-const testHttp = params => get('/albums',params)
-
+import { get , upload } from '@/utils/fetch'
+const testHttp = params => get('/live/b/notice/query-show-list.api',params)
+const uploadHttp = params => upload('/upload/b/upload.api',params)
 export  {
-  testHttp
+  testHttp,
+  uploadHttp
 }

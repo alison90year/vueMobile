@@ -6,7 +6,6 @@ const base = {
      },
       actions:{
            func1(){
-             console.log('base init')
            }
       }
 }

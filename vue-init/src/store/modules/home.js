@@ -1,5 +1,5 @@
 
-import { testHttp } from '@/api/home'
+import { testHttp ,uploadHttp} from '@/api/home'
 
 const home = {
   namespaced: true,
@@ -10,9 +10,18 @@ const home = {
   actions:{
     func1({ commit },params){
       return new Promise((resolve, reject) => {
-        testHttp('/posts',params).then(res => {
-          commit('FUNC1',res.data.slice(0,2))
-           resolve(res.data.slice(0,2))
+        testHttp(params).then(res => {
+          commit('FUNC1',res)
+           resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    uploadAction({ commit },params){
+      return new Promise((resolve, reject) => {
+        uploadHttp(params).then(res => {
+          resolve(res)
         }).catch(err => {
           reject(err)
         })

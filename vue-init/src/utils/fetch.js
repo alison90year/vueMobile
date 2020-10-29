@@ -4,7 +4,6 @@ import setting from "./setting";
 import {Toast} from '@nutui/nutui';
 
 import {getToken, getUid} from './auth'
-
 const service = axios.create({
   baseURL: setting.preFix,  // dev pro
   timeout: setting.timeOut,
@@ -12,25 +11,24 @@ const service = axios.create({
     'Content-Type': setting.contentType[0],
     'x-client': setting.client,
     'x-version': setting.version,
+    'x-uid':getUid() || 1225,
+    'x-token': getToken() || 'admin-token'
   }
 })
 
 //发送请求
 service.interceptors.request.use(
   config => {
-    config.headers['X-Token'] = getToken()
-    config.headers['x-uid'] = getUid()
     return config
   },
   error => {
-    console.log(new Error(error))
     return Promise.reject(error)
   }
 )
 //响应请求
 service.interceptors.response.use(
   response => {
-    const res = response
+    const res = response.data
     return responseCodeHandle(res)
   },
   error => {
@@ -42,14 +40,15 @@ service.interceptors.response.use(
 )
 
 function responseCodeHandle(res) {
-  if (res.status === 200 || res.status === 20000 || res.status === '200') {
+
+  if (res.code === 200 || res.code === 20000 || res.code === '200') {
     return res
   } else {
     Toast.fail(res.message || 'Error', {
       duration: setting.duration,
     });
 
-    if (res.status === 50008 || res.status === 50012 || res.status === 50014) {
+    if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
       // to re-login
       Toast.fail(res.message || 'Error', {
         duration: setting.duration,
@@ -123,29 +122,10 @@ function test() {
 }
 
 function upload(url, params) {
-  const uploadService = axios.create({
-    baseURL: setting.baseUrl,
-    timeout: setting.timeOut,
-    headers: {
-      'Content-Type': setting.contentType[1],
-      'x-uid': getUid()
-    }
-  })
-  uploadService.interceptors.response.use(
-    response => {
-      const res = response.data
-      return responseCodeHandle(res)
-    },
-    error => {
-      Toast.fail(error, {
-        duration: setting.duration,
-      });
-      return Promise.reject(error)
-    }
-  )
+  service.defaults.headers['Content-Type'] = setting.contentType[1]
   return new Promise((resolve, reject) => {
-    uploadService
-      .post(url, params)
+    service
+      .post(url, QS.stringify(params))
       .then(res => {
         resolve(res)
       })
