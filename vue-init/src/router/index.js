@@ -7,7 +7,13 @@ const _import_ = file => () => import('views/'+file)
 export const constantRouterMap = [
   {
     path:'/',
-    name:'App',
+    name:'首页',
+    meta:{page:true},
+    component:_import_('Layout/index')
+  },
+  {
+    path:'/home',
+    name:'家里',
     component:_import_('Home/index')
   }
 ]
@@ -16,4 +22,3 @@ export const router = new Router({
   routes: constantRouterMap
 })
 
-export default router
