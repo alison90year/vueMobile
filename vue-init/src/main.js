@@ -7,9 +7,11 @@ import 'lib-flexible/flexible.js' //移动端适配
 import uploadFile from './utils/uploadFile'
 Vue.prototype.$uploadFile = uploadFile
 
-import { Button, Icon } from '@nutui/nutui';
+import { Button, Icon ,Row , Col} from '@nutui/nutui';
 Button.install(Vue);
 Icon.install(Vue);
+Row.install(Vue);
+Col.install(Vue);
 Vue.config.productionTip = false
 new Vue({
   render: h => h(App),

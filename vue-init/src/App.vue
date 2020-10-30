@@ -2,10 +2,6 @@
     <div id="app">
         <div class="head">头部
 <!--            <nut-icon type="self" :url="require('assets/icons/svg/zs.svg')"></nut-icon>-->
-<!--            <nut-icon-->
-<!--                    type="top"-->
-<!--            >-->
-<!--            </nut-icon>-->
             <button @click="file" style="width: 100px;height: 20px">上传文件</button>
             <label ref="upload"
                    style="position: relative;">
@@ -16,9 +12,7 @@
             <img :src="contentUrl" style="width: 200px;height: 200px" v-if="contentUrl">
         </div>
         <div style="background: gold" class="bottm"></div>
-<!--        <nut-button>-->
-<!--            去结算{{name}}-->
-<!--        </nut-button>-->
+
         <router-view></router-view>
 
     </div>
@@ -55,7 +49,6 @@
         // 调用上传方法，传入选择的文件对象
         this.$uploadFile(event.target.files[0], (picId) => {
                 this.$store.dispatch('home/picToStoreByIdAction',{picID:picId}).then(res => {
-                     console.log(res)
                   this.contentUrl = res.data
                 })
                 // this.contentUrl='//bpic.588ku.com/ad_diversion/20/01/16/a92278a30f085d9148a809c8cba845ce.png'
@@ -72,12 +65,7 @@
 
     #app {
         .head {
-            display: flex;
-            height: 600px;
-            background: aliceblue;
         }
-        .bottm{
-            height: 40px;
-        }
+
     }
 </style>
