@@ -62,7 +62,7 @@ function get(url, params) {
   return new Promise((resolve, reject) => {
     service
       .get(url, {
-        params: QS.stringify(params)
+        params: params
       })
       .then(res => {
         resolve(res)
@@ -125,7 +125,7 @@ function upload(url, params) {
   service.defaults.headers['Content-Type'] = setting.contentType[1]
   return new Promise((resolve, reject) => {
     service
-      .post(url, QS.stringify(params))
+      .post(url, params)
       .then(res => {
         resolve(res)
       })

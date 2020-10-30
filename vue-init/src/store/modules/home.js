@@ -1,5 +1,5 @@
 
-import { testHttp ,uploadHttp} from '@/api/home'
+import { testHttp ,uploadHttp ,picToStoreByIdHttp} from '@/api/home'
 
 const home = {
   namespaced: true,
@@ -21,6 +21,15 @@ const home = {
     uploadAction({ commit },params){
       return new Promise((resolve, reject) => {
         uploadHttp(params).then(res => {
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    picToStoreByIdAction({ commit },params){
+      return new Promise((resolve, reject) => {
+        picToStoreByIdHttp(params).then(res => {
           resolve(res)
         }).catch(err => {
           reject(err)

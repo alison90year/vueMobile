@@ -53,15 +53,10 @@
       },
       selectFile(event) {
         // 调用上传方法，传入选择的文件对象
-        this.$uploadFile(event.target.files[0], (fd) => {
-                 console.log(fd)
-          const formdata = new FormData()
-          formdata.append('file', fd.file)
-          formdata.append('md5', fd.md5)
-                this.$store.dispatch('home/uploadAction',formdata).then(res => {
-                    console.log(res)
-                }).catch(err => {
-                     console.log(err)
+        this.$uploadFile(event.target.files[0], (picId) => {
+                this.$store.dispatch('home/picToStoreByIdAction',{picID:picId}).then(res => {
+                     console.log(res)
+                  this.contentUrl = res.data
                 })
                 // this.contentUrl='//bpic.588ku.com/ad_diversion/20/01/16/a92278a30f085d9148a809c8cba845ce.png'
         })

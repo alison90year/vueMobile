@@ -1,7 +1,7 @@
 
 import SparkMD5 from 'spark-md5'
 import { Toast} from "@nutui/nutui";
-
+import store from "../store";
 const uploadFile = (file, callBack) => {
   const isLt2M = file.size / 1024 / 1024 < 2
   if (!isLt2M) {
@@ -30,7 +30,13 @@ const uploadFile = (file, callBack) => {
     if (currentChunk < chunks) {
       return false
     } else {
-      callBack({md5:spark.end(),file:file})
+
+      const formdata = new FormData()
+      formdata.append('file', file)
+      formdata.append('md5', spark.end())
+       store.dispatch('home/uploadAction',formdata).then(res => {
+         callBack(res.data)  //上传成功返回图片ID
+      })
     }
   }
   fileReader.onerror = function() {
